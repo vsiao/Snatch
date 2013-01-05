@@ -1,0 +1,19 @@
+{
+  "name": "Snatch",
+  "version": "0.0.1",
+  "description": "Stressful socket.io scrabble singularity",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vincentsiao/snatch.git"
+  },
+  "engines": {
+    "node": "0.8.16",
+    "npm": "1.1.59"
+  },
+  "dependencies": {
+    "express": "3.0.0",
+    "path": "0.4.9",
+    "socket.io": "0.9.13"
+  },
+  "license": "MIT"
+}
