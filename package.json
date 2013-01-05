@@ -11,6 +11,8 @@
     "npm": "1.1.59"
   },
   "dependencies": {
+    "consolidate": "0.7.0",
+    "dustjs-linkedin": "1.1.1",
     "express": "3.0.0",
     "path": "0.4.9",
     "socket.io": "0.9.13"
