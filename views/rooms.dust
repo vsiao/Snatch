@@ -15,11 +15,16 @@
   <div id='otherplayers'>
     
   </div>
+  <h2>Messages</h2>
+  <div id='messagebox'>
+    
+  </div>
   <h2>Your Words</h2>
   <div id='yourwords'></div>
-  <div id='userinput'>
-    <input type='text' />
-    <input type='button' value='enter'/>
+  <div>
+    <input id='userinput' type='text' />
+    <input id='submitbtn' type='button' value='enter' />
   </div>
 </body>
 </html>
+

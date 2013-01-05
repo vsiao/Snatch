@@ -6,17 +6,36 @@ var whosturn = "";
 socket.on('connect', function(data) {
   
   //updatestatus user waiting
-  socket.emit('updatestatus', {room: "{room_id}",
-    status: "waiting",
-    playername: "unnamed"});
-  while (playername == null){
-    playername = prompt("Enter your name and hit OK when you are ready to begin","");
+  while (playername == null) {
+    playername = prompt("Enter your name","");
   }
-  
-  //updatestatus user ready
-  socket.emit('updatestatus', {room: "{room_id}",
+  socket.emit('updatestatus', {
+    room: "{room_id}",
     status: "waiting",
     playername: playername});
+  alert("hit ok when you're ready to begin");
+  
+  //updatestatus user ready
+  socket.emit('updatestatus', {
+    room: "{room_id}",
+    status: "ready",
+    playername: playername
+  });
+  
+  //makemove sends an attempt to steal
+  function playermove(action,attempt) {
+    
+    if (action == "flip") {
+      socket.emit('makemove', {
+        action: "flip"
+      });
+    } else {
+      socket.emit('makemove', {
+        action: "steal",
+        attempt: attempt
+      });
+    }
+  }
   
   //server updates the board
   socket.on('updateboard', function(data) {
@@ -26,16 +45,29 @@ socket.on('connect', function(data) {
     
     $("#boardletters").text("");
     $("#otherplayers").text("");
-    for (tile in tilesonboard){
+    for (tile in tilesonboard) {
       $("#boardletters").append(tilesonboard[tile]);
     }
   
-    for (player in players){
+    for (player in players) {
       playerHTML = "<h2>"+player["name"]+"</h2>";
       playerHTML += "<div>"+player["words"]+"</div>";
       $("#boardletters").append(playerHTML);
     }
   });
   
+  //listener for attempting a steal
+  $("#submitbtn").click(function(){
+    attemptedword = $("#userinput").val();
+    playermove("steal", attemptedword);
+  });
   
+  //listener for flipping a tile
+  $('body').keyup(function(e) {
+    if (e.keyCode == 32) {
+      if (whosturn == playername) {
+        playermove("flip");
+      }
+    }
+  });
 });
