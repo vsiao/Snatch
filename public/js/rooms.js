@@ -10,21 +10,21 @@ socket.on('connect', function(data) {
     playername = prompt("Enter your name","");
   }
   socket.emit('updatestatus', {
-    room: "{room_id}",
+    room: room,
     status: "waiting",
-    playername: playername});
+    playername: playername
+  });
   alert("hit ok when you're ready to begin");
   
   //updatestatus user ready
   socket.emit('updatestatus', {
-    room: "{room_id}",
+    room: room,
     status: "ready",
     playername: playername
   });
   
   //makemove sends an attempt to steal
   function playermove(action,attempt) {
-    
     if (action == "flip") {
       socket.emit('makemove', {
         action: "flip"
