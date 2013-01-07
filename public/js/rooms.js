@@ -4,24 +4,13 @@ var playerstate = "waiting";
 var whosturn = "";
 
 socket.on('connect', function(data) {
-  
-  //updatestatus user waiting
+  socket.emit('roomenter', room);
   while (playername == null) {
-    playername = prompt("Enter your name","");
+    playername = prompt("Enter your name", "");
   }
-  socket.emit('updatestatus', {
-    room: room,
-    status: "waiting",
-    playername: playername
-  });
+  socket.emit('updatename', playername);
   alert("hit ok when you're ready to begin");
-  
-  //updatestatus user ready
-  socket.emit('updatestatus', {
-    room: room,
-    status: "ready",
-    playername: playername
-  });
+  socket.emit('ready');
   
   //makemove sends an attempt to steal
   function usermove(action,attempt) {
@@ -55,6 +44,32 @@ socket.on('connect', function(data) {
       playerHTML += "<div>"+player["words"]+"</div>";
       $("#boardletters").append(playerHTML);
     }
+  });
+
+  socket.on('newletter', function(letter) {
+    $('#boardletters').append(letter + ' ');
+  });
+
+  socket.on('whosturn', function(player) {
+    whosturn = player;
+    $("#whosturn").text(whosturn);
+  });
+
+  socket.on('countdown', function(data) {
+    var header;
+    switch (data.to) {
+      case 'start':
+        header = 'Game starts in:';
+        break;
+      case 'endturn':
+        header = whosturn + "'s turn";
+        break;
+      case 'end':
+        header = 'Game ends in:';
+        break;
+    }
+    $('#countdownHeader').text(header);
+    $('#countdown').text(data.time_left);
   });
   
   //server sends a message

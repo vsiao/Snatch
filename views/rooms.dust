@@ -2,33 +2,30 @@
 <html>
 <head>
   <title>Snatch - Room "{room_id}"</title>
-  
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script>
-    var room = "{room_id}";
-  </script>
-  <script type="text/javascript" src="/js/rooms.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
 </head>
 <body>
   <h1>Snatch - Room "{room_id}"</h1>
   <h3><span id='whosturn'>Noone's</span> Turn</h3>
   <h2>Tiles on Board</h2>
   <div id='boardletters'></div>
-  <div id='otherplayers'>
-    
-  </div>
+  <div id='otherplayers'></div>
+  <h2 id="countdownHeader"></h2>
+  <div id="countdown"></div>
   <h2>Messages</h2>
-  <div id='messagebox'>
-    
-  </div>
+  <div id='messagebox'></div>
   <h2>Your Words</h2>
   <div id='yourwords'></div>
   <div>
     <input id='userinput' type='text' />
     <input id='submitbtn' type='button' value='enter' />
   </div>
+  
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script>
+  var room = "{room_id}";
+  </script>
+  <script type="text/javascript" src="/js/rooms.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </body>
 </html>
 
