@@ -24,7 +24,7 @@ socket.on('connect', function(data) {
   });
   
   //makemove sends an attempt to steal
-  function playermove(action,attempt) {
+  function usermove(action,attempt) {
     if (action == "flip") {
       socket.emit('makemove', {
         action: "flip"
@@ -43,6 +43,7 @@ socket.on('connect', function(data) {
     players = data["players"];
     whosturn = data["whosturn"];
     
+    $("#whosturn").text(whosturn);
     $("#boardletters").text("");
     $("#otherplayers").text("");
     for (tile in tilesonboard) {
@@ -62,17 +63,24 @@ socket.on('connect', function(data) {
     $("#messagebox").append(message);
   });
   
+  //server sends a playermove
+  socket.on('playermove', function(data) {
+    player = data['player'];
+    word = data['word'];
+    $("#messagebox").append(player + " stole " + word + "!");
+  });
+  
   //listener for attempting a steal
   $("#submitbtn").click(function(){
     attemptedword = $("#userinput").val();
-    playermove("steal", attemptedword);
+    usermove("steal", attemptedword);
   });
   
   //listener for flipping a tile
   $('body').keyup(function(e) {
     if (e.keyCode == 32) {
       if (whosturn == playername) {
-        playermove("flip");
+        usermove("flip");
       }
     }
   });

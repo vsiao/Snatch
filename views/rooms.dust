@@ -13,6 +13,7 @@
 </head>
 <body>
   <h1>Snatch - Room "{room_id}"</h1>
+  <h3><span id='whosturn'>Noone's</span> Turn</h3>
   <h2>Tiles on Board</h2>
   <div id='boardletters'></div>
   <div id='otherplayers'>
