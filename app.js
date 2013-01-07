@@ -14,7 +14,9 @@ var server = app.listen(port, function() {
   console.log("Listening on port %d in %s mode", port, app.settings.env);
 });
 
+var Game = require('./lib/Game')(app);
 var players = {};
+var games = {};
 
 function buildRoomData() {
   var rooms = [];
@@ -33,13 +35,36 @@ function buildRoomData() {
   return rooms;
 }
 
-var io = SocketIO.listen(server);
-io.sockets.on('connection', function(socket) {
-  socket.on('updatestatus', function(data) {
-    socket.join(data.room);
-    socket.broadcast.emit('update:rooms', {rooms: buildRoomData()});
-    players[socket.id] = data;
-  });
+var socketEventHandlers = {
+  updateplayer: function(data) {
+    var i;
+    for (i = 0; i < data.changed.length; ++i) {
+      switch (data.changed[i]) {
+        case 'name':
+          /* Player changed name */
+          break;
+        case 'status':
+          /* waiting | ready | playing */
+          break;
+      }
+    }
+  },
+  makemove: function(data) {
+    switch (data.action) {
+      case 'flip':
+        break;
+      case 'attempt':
+        break;
+    }
+  }
+};
+
+app.io = SocketIO.listen(server);
+app.io.sockets.on('connection', function(socket) {
+  var evt;
+  for (evt in socketEventHandlers) {
+    socket.on(evt, socketEventHandlers[evt]);
+  }
 });
 
 app.get('/', function(req, res) {
@@ -49,3 +74,4 @@ app.get('/', function(req, res) {
 app.get('/rooms/:room_id', function(req, res) {
   res.render('rooms', {room_id: req.params.room_id});
 });
+
