@@ -56,6 +56,12 @@ socket.on('connect', function(data) {
     }
   });
   
+  //server sends a message
+  socket.on('updatemessage', function(data) {
+    message = data['message'];
+    $("#messagebox").append(message);
+  });
+  
   //listener for attempting a steal
   $("#submitbtn").click(function(){
     attemptedword = $("#userinput").val();
