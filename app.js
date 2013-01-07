@@ -18,12 +18,21 @@ var Game = require('./lib/Game')(app);
 var players = {};
 var games = {};
 
+app.io = SocketIO.listen(server);
+app.io.sockets.on('connection', function(socket) {
+  var evt;
+  for (evt in socketEventHandlers) {
+    socket.on(evt, socketEventHandlers[evt]);
+  }
+});
+
+
 function buildRoomData() {
   var rooms = [];
   var i, room, room_id, clients;
-  for (room_id in io.sockets.manager.rooms) {
+  for (room_id in app.io.sockets.manager.rooms) {
     room = {room_id: room_id, users: []};
-    clients = io.sockets.manager.rooms[room_id];
+    clients = app.io.sockets.manager.rooms[room_id];
     for (i = 0; i < clients.length; ++i) {
       if (players.hasOwnProperty(clients[i]) &&
           players[clients[i]].status != 'waiting') {
@@ -58,15 +67,6 @@ var socketEventHandlers = {
     }
   }
 };
-
-app.io = SocketIO.listen(server);
-app.io.sockets.on('connection', function(socket) {
-  var evt;
-  for (evt in socketEventHandlers) {
-    socket.on(evt, socketEventHandlers[evt]);
-  }
-});
-
 app.get('/', function(req, res) {
   res.render('index', {rooms: buildRoomData()});
 });
