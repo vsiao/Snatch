@@ -36,7 +36,7 @@ app.io.sockets.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     if (players.hasOwnProperty(socket.id)) {
-      players[socket.id].leave();
+      players[socket.id].exit();
     }
   });
 });

@@ -16,11 +16,13 @@ socket.on('connect', function(data) {
   function usermove(action,attempt) {
     if (action == "flip") {
       socket.emit('makemove', {
+        playername: playername,
         action: "flip"
       });
     } else {
       socket.emit('makemove', {
-        action: "steal",
+        playername: playername,
+        action: "attempt",
         attempt: attempt
       });
     }
@@ -35,13 +37,14 @@ socket.on('connect', function(data) {
     $("#whosturn").text(whosturn);
     $("#boardletters").text("");
     $("#otherplayers").text("");
-    for (tile in tilesonboard) {
-      $("#boardletters").append(tilesonboard[tile]);
+    var i;
+    for (i = 0; i < tilesonboard.length; ++i) {
+      $("#boardletters").append(tilesonboard[i] + ' ');
     }
   
-    for (player in players) {
-      playerHTML = "<h2>"+player["name"]+"</h2>";
-      playerHTML += "<div>"+player["words"]+"</div>";
+    for (name in players) {
+      playerHTML = "<h2>"+name+"</h2>";
+      playerHTML += "<div>"+players[name].join(" ")+"</div>";
       $("#boardletters").append(playerHTML);
     }
   });
@@ -88,7 +91,7 @@ socket.on('connect', function(data) {
   //listener for attempting a steal
   $("#submitbtn").click(function(){
     attemptedword = $("#userinput").val();
-    usermove("steal", attemptedword);
+    usermove("attempt", attemptedword);
   });
   
   //listener for flipping a tile
