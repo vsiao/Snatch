@@ -23,7 +23,7 @@ socket.on('connect', function(data) {
       socket.emit('makemove', {
         playername: playername,
         action: "attempt",
-        attempt: attempt
+        word: attempt
       });
     }
   }
